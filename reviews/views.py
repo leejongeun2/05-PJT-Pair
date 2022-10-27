@@ -1,6 +1,9 @@
+import json
 from django.shortcuts import render, redirect
-from .forms import ReviewForm
-from .models import Review
+from .forms import ReviewForm, CommentForm
+from .models import Comment, Review
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -11,6 +14,7 @@ def index(request):
     return render(request, "reviews/index.html", context)
 
 
+@login_required
 def create(request):
     if request.method == "POST":
         review_form = ReviewForm(request.POST)
@@ -25,10 +29,16 @@ def create(request):
 
 def detail(request, pk):
     review = Review.objects.get(pk=pk)
-    context = {"review": review}
+    comment_form = CommentForm()
+    context = {
+        "review": review,
+        "comment_form": comment_form,
+        "comments": review.comments.all(),
+    }
     return render(request, "reviews/detail.html", context)
 
 
+@login_required
 def update(request, pk):
     review = Review.objects.get(pk=pk)
     if request.method == "POST":
@@ -47,6 +57,35 @@ def update(request, pk):
     )
 
 
+@login_required
 def delete(request, pk):
     Review.objects.get(pk=pk).delete()
     return redirect("reviews:index")
+
+
+@login_required
+def comment_create(request, pk):
+    review = Review.objects.get(pk=pk)
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.user = request.user
+        comment.review = review
+        comment.save()
+        return JsonResponse(
+            {
+                "content": comment.content,
+            }
+        )
+
+
+@login_required
+def comment_delete(request, review_pk, comment_pk):
+    comment = Comment.objects.get(pk=comment_pk)
+    comment.delete()
+    comment = False
+    return JsonResponse(
+        {
+            "content": comment,
+        }
+    )
