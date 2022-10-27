@@ -99,7 +99,7 @@ def follow(request, pk):
         messages.warning(request, '스스로 팔로우 할 수 없습니다.')
         return redirect('accounts:detail', pk)
     if request.user in user.followers.all():
-        user.followrs.remove(request.user)
+        user.followers.remove(request.user)
     else:
         user.followers.add(request.user)
 
