@@ -1,3 +1,14 @@
-{% extends 'base.html' %} {% block content %}
-<h1>1</h1>
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+
+<form action = '{% url 'reviews:create' %}' method = 'POST'>
+{% csrf_token %}
+{% bootstrap_form review_form %}
+{% bootstrap_button button_type="submit" content="OK" %}
+</form>
 {% endblock content %}
+
+<button></button>
