@@ -11,4 +11,4 @@ class ReviewForm(ModelForm):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
-        fields = ("content",)
+        fields = ["content"]

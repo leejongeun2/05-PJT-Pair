@@ -8,6 +8,11 @@ class Review(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default='')
+    image = ProcessedImageField(upload_to='images/', blank=True,
+                                processors=[ResizeToFill(1200, 960)],
+                                format='JPEG',
+                                options={'quality': 80})
 
 
 class Comment(models.Model):
@@ -17,12 +22,4 @@ class Comment(models.Model):
     review = models.ForeignKey(
         Review, related_name="comments", on_delete=models.CASCADE
     )
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="comments", on_delete=models.CASCADE
-    )
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name = 'like_articles')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default='')
-    image = ProcessedImageField(upload_to='images/', blank=True,
-                                processors=[ResizeToFill(1200, 960)],
-                                format='JPEG',
-                                options={'quality': 80})

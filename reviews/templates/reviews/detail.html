@@ -5,12 +5,15 @@
 {% bootstrap_javascript %}
 
 {% block content %} 
-
+<p>{{ review.title }}</p>
+<p>{{ review.content }}</p>
 <a href="{% url 'reviews:update' review.pk %}">글수정</a>
 <a href="{% url 'reviews:delete' review.pk %}">글삭제</a>
 <hr>
-{{ review.title }}
-{{ review.content }}
+{% if review.image %}
+<img src="{{ review.image.url }}" alt="{{ review.image }}" width="400" height="300">
+{% endif %}
+
 <hr>
 
 <!-- Comment-Form -->
