@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 from .forms import CustomUserChangeForm, CustomUserCreationform
 from django.contrib.auth import login as auth_login
@@ -46,11 +46,17 @@ def login(request):
 
 
 
-def logout(requst):
-    pass
+def logout(request):
+    auth_logout(request)
+    return redirect('reviews:index')
 
-def detail(request):
-    pass
+
+def detail(request, pk):
+    user = get_object_or_404(get_user_model(), pk=pk)
+    context = {
+        'user': user
+    }
+    return render(request, 'accounts/detail.html', context)
 
 def update(request):
     pass
