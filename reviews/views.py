@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import ReviewForm
 from .models import Review
-
-# Create your views here.
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -10,12 +9,14 @@ def index(request):
     context = {"reviews": reviews}
     return render(request, "reviews/index.html", context)
 
-
+@login_required
 def create(request):
     if request.method == "POST":
-        review_form = ReviewForm(request.POST)
+        review_form = ReviewForm(request.POST, request.FILES)
         if review_form.is_valid():
-            review_form.save()
+            review = review_form.save(commit= False)
+            review.user = request.user
+            review.save()
             return redirect("reviews:index")
     else:
         review_form = ReviewForm()
@@ -25,14 +26,16 @@ def create(request):
 
 def detail(request, pk):
     review = Review.objects.get(pk=pk)
-    context = {"review": review}
+    context = {
+        "review": review
+        }
     return render(request, "reviews/detail.html", context)
 
-
+@login_required
 def update(request, pk):
     review = Review.objects.get(pk=pk)
     if request.method == "POST":
-        form = ReviewForm(request.POST, instance=review)
+        form = ReviewForm(request.POST, request.FILES, instance=review )
         if form.is_valid():
             form.save()
             return redirect("reviews:detail", review.pk)
@@ -50,3 +53,12 @@ def update(request, pk):
 def delete(request, pk):
     Review.objects.get(pk=pk).delete()
     return redirect("reviews:index")
+
+@login_required
+def like(request, pk):
+    review = Review.objects.get(pk=pk)
+    if request.user in review.like_users.all():
+        review.like_users.remove(request.user)
+    else:
+        review.like_users.add(request.user)
+    return redirect('reviews:detail', pk)
