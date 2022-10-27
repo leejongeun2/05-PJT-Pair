@@ -1,6 +1,12 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+
+
+{% block content %}
+
+<a href="{% url 'reviews:create' %}">글쓰기</a>
+<hr>
 {% for review in reviews %} 
-{{ review.title }}
+<a href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a><br>
 {% endfor %}
 
 {% endblock content %}

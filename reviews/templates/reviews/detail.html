@@ -1,8 +1,12 @@
 {% extends 'base.html' %} 
+
+
 {% block content %} 
 
+<a href="{% url 'reviews:update' review.pk %}">글수정</a>
+<a href="{% url 'reviews:delete' review.pk %}">글삭제</a>
+<hr>
 {{ review.title }}
-
 {{ review.content }}
 
 {% endblock content %}
