@@ -4,5 +4,5 @@ from .models import Review
 class ReviewForm(ModelForm):
     
    class Meta :
-       Model = Review
-       field = '__all__' 
+       model = Review
+       fields = '__all__' 
