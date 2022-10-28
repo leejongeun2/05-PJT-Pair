@@ -1,3 +1,8 @@
+.detail-wrap {
+  width: 80%;
+  margin: auto; 
+}
+
 .detail {
   height: 100vh;
   margin-top: 100px;
@@ -12,4 +17,9 @@
 
 .detail-right {
   background-color: #fff;
+}
+
+.box {
+  width: 50px;
+  height: 30px;
 }
