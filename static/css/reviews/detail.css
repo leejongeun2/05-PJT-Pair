@@ -1,0 +1,15 @@
+.detail {
+  height: 100vh;
+  margin-top: 100px;
+}
+
+.detail-left {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-right {
+  background-color: #fff;
+}

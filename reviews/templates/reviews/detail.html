@@ -4,64 +4,133 @@
 {% bootstrap_javascript %}
 
 {% block content %} 
-<p>{{ review.title }}</p>
-<p>{{ review.content }}</p>
-<a href="{% url 'reviews:update' review.pk %}">글수정</a>
-<a href="{% url 'reviews:delete' review.pk %}">글삭제</a>
-<span>
-  {% if request.user.is_authenticated %}
-  <a  href="{% url 'reviews:like' review.pk %}">
-    {% if request.user in review.like_users.all %}
+
+<div class="detail d-flex border">
+
+  <!-- Detail-left -->
+  <div class="detail-left w-50">
+    {% if review.image %}
+    <img src="{{ review.image.url }}" alt="{{ review.image }}">
+    {% endif %}
+  </div>
+
+  <!-- Detail-right -->
+  <div class="detail-right d-flex flex-column justify-content-between w-50">
+    <!-- right-top -->
+    <div class="d-flex align-items-center justify-content-between border-bottom p-3">
+      <div class="d-flex align-items-center">
+        <a class="nav-link" href="{% url 'accounts:profile' %}"><img src="{{ profile.image.url }}" alt="{{ profile.image }}" width="35" height="35" style="border-radius: 50%;"></a>
+        <p class="ms-3 m-0">{{ request.user }}</p>
+      </div>
+      <!-- Button trigger modal -->
+      <button type="button" style="background: none;" class="border-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <a href="#"><i class="fa-solid fa-ellipsis"></i></a>
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          
+              <div class="d-flex flex-column">
+                <a class="d-flex justify-content-center" href="{% url 'reviews:update' review.pk %}"><button class="border-0 p-3" style="background: none;" data-bs-dismiss="modal">리뷰 수정</button></a>
+                <hr class="m-0">
+                <a class="d-flex justify-content-center" href="{% url 'reviews:delete' review.pk %}"><button class="border-0 p-3" style="background: none;" data-bs-dismiss="modal">리뷰 삭제</button></a>
+                <hr class="m-0">
+                <button class="border-0 p-3" style="background: none;" data-bs-dismiss="modal">취소</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right-content -->
+    <div class="p-3">
+      <p class="m-0">{{ review.content }}</p>
+    </div>
+    <hr class="m-0">
+    <div class="detail-content h-75 p-3">
+      <!-- Comments -->
+      <div id="comments">
+        {% for comment in comments %}
+          <div class="d-flex justify-content-between mb-3">
+            <div class="d-flex align-items-center">
+              <a class="nav-link" href="{% url 'accounts:profile' %}"><img src="{{ profile.image.url }}" alt="{{ profile.image }}" width="35" height="35" style="border-radius: 50%;"></a>
+              <p class="m-0 ms-3">{{ comment.content }}</p>
+            </div>
+            <!-- Comment-delete -->
+            <form action="{% url 'reviews:comment_delete' review.pk comment.pk %}" method="post">
+              {% csrf_token %}
+              {% bootstrap_button "삭제" button_type="submit" button_class="btn-outline-danger" %}
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <hr>
+    <!-- right-btn -->
+    <div class="detail-btn p-3">
+      {% if request.user.is_authenticated %}
+      <a  href="{% url 'reviews:like' review.pk %}">
+        {% if request.user in review.like_users.all %}
+        <div class="d-flex justify-content-between mb-2">
+          <div class="">
+            <i class="fa-solid fa-heart fa-lg"></i>
+            <i class="fa-regular fa-comment fa-lg ms-2"></i>
+          </div>
+          <div class="">
+            <i class="fa-solid fa-paperclip fa-lg"></i>
+          </div>
+        </div>
+        {% else %}
+        <div class="d-flex justify-content-between mb-2">
+          <div class="">
+            <i class="fa-regular fa-heart fa-lg"></i>
+            <i class="fa-regular fa-comment fa-lg ms-2"></i>
+          </div>
+          <div class="">
+            <i class="fa-solid fa-paperclip fa-lg"></i>
+          </div>
+        </div>
+        {% endif %}
+      </a>
+      <div class="d-flex justify-content-between">
+        {% if request.user in review.like_users.all %}
+          <p class="m-0">좋아요 {{ review.like_users.count }} 개</p>
+        {% else %}
+          <p></p>
+        {% endif %}
+        {{ review.created_at }}
+      </div>
+    {% endif %} 
+    </div>
     
-    좋아요 취소
-    <i class="bi bi-chat-square-heart-fill"></i></i>
+    <hr>
     
-    {% else %}
-    좋아요
-    <i class="bi bi-chat-square-heart"></i></i>
-    {% endif %}</a
-  >{{ review.like_users.count }}</span
->
-{% endif %} 
-</span>
-<hr>
-{% if review.image %}
-<img src="{{ review.image.url }}" alt="{{ review.image }}" width="400" height="300">
-{% endif %}
-
-
-
-
-<hr>
-<!-- Comment-Form -->
-<form action="{% url 'reviews:comment_create' review.pk %}" method="post">
-  {% csrf_token %}
-  {% bootstrap_form comment_form %}
-  {% bootstrap_button button_type="submit" content="OK" %}
-</form>
-
-<hr>
-<!-- Comments -->
-<div id="comments">
-  {% for comment in comments %}
-    <div class="d-flex justify-content-between">
-      <p>{{ comment.content }}</p>
-      <!-- Comment-delete -->
-      <form action="{% url 'reviews:comment_delete' review.pk comment.pk %}" method="post">
+    <!-- right-comment -->
+    <div class="detail-comment p-3">
+      <!-- Comment-Form -->
+      <form action="{% url 'reviews:comment_create' review.pk %}" method="post">
         {% csrf_token %}
-        {% bootstrap_button "delete" button_type="submit" button_class="btn-primary" %}
+        {% bootstrap_form comment_form %}
+        <div class="d-flex justify-content-end">
+          {% bootstrap_button button_type="submit" content="게시" button_class="btn-outline-primary" %}
+        </div>
       </form>
     </div>
-    <hr>
-  {% endfor %}
+  </div>
+  
 </div>
+
 
 {% endblock content %}
 
 
+
+<!-- Script -->
 {% block script %}
-
-
 {% endblock script %}
 
 <!-- 

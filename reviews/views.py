@@ -39,6 +39,7 @@ def detail(request, pk):
         "review": review,
         "comment_form": comment_form,
         "comments": review.comments.all(),
+        'profile': request.user.profile_set.all()[0],
     }
     return render(request, "reviews/detail.html", context)
 
