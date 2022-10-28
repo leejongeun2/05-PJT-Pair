@@ -1,5 +1,6 @@
 @import 'reviews/detail.css';
 @import 'reviews/create.css';
+@import 'accounts/detail.css';
 
 
 form {
@@ -25,7 +26,6 @@ a:hover {
 }
 
 
-.review-index,
-.profile {
+.review-index {
   margin-top: 100px;
 }

@@ -6,12 +6,11 @@
     <h5>My page</h5>
 
     {% if profile.image %}
-    <div class="row">
-        <img src="{{ profile.image.url }}" alt="" style="width: 100px; height: 100px; border-radius: 50%" />
-        <div class = "col-2 d-flex justify-content-around" >
-          <p class = "fs-3 my-2" > {{ user.username }}</p>
-
-    </div>
+    <div class="">
+        <div class="d-flex align-items-center">
+            <img src="{{ profile.image.url }}" alt="" style="width: 100px; height: 100px; border-radius: 50%" />
+            <p class = "fs-3 my-2 ms-5" > {{ user.username }}</p>
+        </div>
         <div class="col-12 d-flex justify-content-around ">
 
             <div>

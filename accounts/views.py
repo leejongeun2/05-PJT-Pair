@@ -69,6 +69,7 @@ def detail(request, pk):
     user = get_object_or_404(get_user_model(), pk=pk)
     context = {
         'user': user,
+        'reviews': user.review_set.all(),
     }
     return render(request, 'accounts/detail.html', context)
 
