@@ -13,9 +13,8 @@ class Review(models.Model):
                                 processors=[ResizeToFill(1200, 960)],
                                 format='JPEG',
                                 options={'quality': 80})
-
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name = 'like_articles')
-
+                                
 class Comment(models.Model):
     content = models.CharField(max_length=80)
     created_at = models.DateTimeField(auto_now_add=True)
