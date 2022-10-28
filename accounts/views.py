@@ -68,7 +68,7 @@ def logout(request):
 def detail(request, pk):
     user = get_object_or_404(get_user_model(), pk=pk)
     context = {
-        'user': user
+        'user': user,
     }
     return render(request, 'accounts/detail.html', context)
 
@@ -124,6 +124,7 @@ def profile(request):
     print(profile_)
     context = {
         "profile": profile_,
+        'reviews': request.user.review_set.all(),
     }
     return render(request, "accounts/profile.html", context)
 

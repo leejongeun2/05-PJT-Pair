@@ -15,7 +15,7 @@
 <!-- Nav -->
 <nav class="navbar navbar-expand-lg border-bottom py-2">
   <div class="container d-flex justify-content-around">
-    <a class="navbar-brand " href="{% url 'reviews:index' %}">LOGO</a>
+    <a class="navbar-brand " href="{% url 'reviews:index' %}"><img src="https://fontmeme.com/images/instagram-new-logo.png" width="120" height="45" alt=""></a>
     <form class="d-flex" role="search">
       <input class=" form-control" type="search" placeholder="검색" aria-label="Search">
     </form>
@@ -31,9 +31,18 @@
         <li class="nav-item">
           <a class="nav-link" href="#"><i class="fa-regular fa-heart fa-lg"></i></a>
         </li>
+        
+        {% if request.image %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:profile' %}"><img src="https://dummyimage.com/1200x960/000000/c4c4c4%22%3E" width="35" height="35" style="border-radius: 50%;""></a>
+        </li>
+        {% else %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'accounts:profile' %}"><img src="{{ profile.image.url }}" alt="{{ profile.image }}" width="35" height="35" style="border-radius: 50%;"></a>
         </li>
+        {% endif %}
+          
+          
           <li class="nav-item">
             <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
           </li>

@@ -17,3 +17,9 @@ a:hover {
   width: 100%;
   background-color: #fff;
 }
+
+
+.review-index,
+.profile {
+  margin-top: 100px;
+}
