@@ -19,7 +19,13 @@
     <!-- right-top -->
     <div class="d-flex align-items-center justify-content-between border-bottom p-3">
       <div class="d-flex align-items-center">
-        <a class="nav-link" href="{% url 'accounts:profile' %}"><img src="{{ profile.image.url }}" alt="{{ profile.image }}" width="35" height="35" style="border-radius: 50%;"></a>
+        {% for profile in request.user.profile_set.all %}
+          {% if profile.image %}
+          <a class="nav-link" href="{% url 'accounts:profile' %}"><img src="{{ profile.image.url }}" alt="{{ profile.image }}" width="35" height="35" style="border-radius: 50%;"></a>
+          {% else %} 
+          <a class="nav-link" href="{% url 'accounts:profile' %}"><img src="https://dummyimage.com/1200x960/000000/c4c4c4%22%3E" width="35" height="35" style="border-radius: 50%;""></a>
+          {% endif %}
+        {% endfor %}
         <p class="ms-3 m-0">{{ request.user }}</p>
       </div>
       <!-- Button trigger modal -->
