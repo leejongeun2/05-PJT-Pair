@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
-from .forms import CustomUserChangeForm, CustomUserCreationform
+from .forms import CustomUserChangeForm, CustomUserCreationform, ProfileForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from .models import Profile
 
 # Create your views here.
 
@@ -20,14 +20,18 @@ def index(request):
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationform(request.POST)
+        profile_ = Profile()
         if form.is_valid():
             user = form.save()
+            profile_.user = user
+            profile_.save()
             auth_login(request, user)
             return redirect('reviews:index')
     else:
         form = CustomUserCreationform()
+  
     context = {
-        'form': form
+        'form': form,
     }
     return render(request, 'accounts/signup.html', context)
 
@@ -104,5 +108,32 @@ def follow(request, pk):
         user.followers.add(request.user)
 
     return redirect('accounts:detail', pk)
+
+@login_required
+def profile(request):
+    user_ = request.user
+    profile_ = user_.profile_set.all()[0]
+    print(profile_)
+    context = {
+        "profile": profile_,
+    }
+    return render(request, "accounts/profile.html", context)
+
+
+@login_required
+def profile_update(request):
+    user_ = get_user_model().objects.get(pk=request.user.pk)
+    current_user = user_.profile_set.all()[0]
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=current_user)
+        if form.is_valid():
+            form.save()
+            return redirect("accounts:profile")
+    else:
+        form = ProfileForm(instance=current_user)
+    context = {
+        "profile_form": form,
+    }
+    return render(request, "accounts/profile_update.html", context)
     
         
