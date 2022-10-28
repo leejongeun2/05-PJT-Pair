@@ -10,18 +10,28 @@
   {% bootstrap_css %}
 </head>
 
-<nav class="navbar navbar-expand-lg bg-danger">
-  <div class="container">
+<!-- Nav -->
+<nav class="navbar navbar-expand-lg border-bottom py-2">
+  <div class="container d-flex justify-content-around">
     <a class="navbar-brand " href="{% url 'reviews:index' %}">LOGO</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <form class="d-flex" role="search">
+      <input class=" form-control" type="search" placeholder="검색" aria-label="Search">
+    </form>
+    <div class="justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
         {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts:profile' %}">{{ request.user }}</a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'reviews:index' %}"><i class="fa-solid fa-house fa-lg"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'reviews:create' %}"><i class="fa-regular fa-square-plus fa-lg"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fa-regular fa-heart fa-lg"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'accounts:profile' %}"><img src="{{ profile.image.url }}" alt="{{ profile.image }}" width="35" height="35" style="border-radius: 50%;"></a>
+        </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
           </li>
@@ -34,10 +44,7 @@
           </li>
         {% endif %}
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+
     </div>
   </div>
 </nav>
@@ -51,5 +58,6 @@
 {% endblock script %}
   
 {% bootstrap_javascript %}
+<script src="https://kit.fontawesome.com/3ef4088aa9.js" crossorigin="anonymous"></script>
 </body>
 </html>
