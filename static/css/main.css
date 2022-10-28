@@ -1,5 +1,10 @@
 @import 'reviews/detail.css';
+@import 'reviews/create.css';
 
+
+form {
+  margin: 0;
+}
 
 a { 
   text-decoration:none;
