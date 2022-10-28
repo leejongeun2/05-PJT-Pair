@@ -4,15 +4,89 @@
 {% bootstrap_javascript %}
 
 {% block content %}
-  <a href="{% url 'reviews:create' %}">글쓰기</a>
-  <hr>
-  {% for review in reviews %} 
-    <div class="mb-4 card">
-      <a class="text-decoration-none text-black" href="{% url 'accounts:detail' review.pk %}">
-      
-        {% if review.image %}
-          <img src="{{ review.image.url }}" alt="{{ review.image }}" width="400" height="300">
-        {% endif %}    
-      <a href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a><br>
+<div class="row mx-4">
+  <div class="col-8">
+    {% for review in reviews %} 
+      <div class="mb-4 card">
+        <div class="p-2 card-body d-flex flex-row align-items-center jsborder-bottom justify-content-between">
+          
+          <a class="text-decoration-none text-black" href="{% url 'accounts:detail' review.user.pk %}">
+            <div class="d-flex">
+              <div class="me-3 d-flex align-items-center border rounded-circle">
+                {% for profile_se in review.user.profile_set.all %}
+                {% if profile_se.image %}
+                  <img src="{{ profile_se.image.url }}" alt="{{ profile_se.image }}" style="width: 35px; height: 35px; border-radius: 500px">
+                  {% else %}
+                    <img src="https://dummyimage.com/1200x960/000000/c4c4c4" alt="image" style="width: 35px; height: 35px; border-radius: 500px">
+                  {% endif %}
+                {% endfor %}
+              </div>
+              
+              <h6 class="mt-2 card-title fw-bold">
+                {{ review.user.username }}
+              </h6>
+            </div>
+          </a>
+            
+            <div>
+              <i class="bi bi-three-dots fs-4"></i>
+            </div>
+          </div>
+          <a href="{% url 'reviews:detail' review.pk %}">
+          <img src="{{ review.image.url }}" alt="{{ review.image }}" style="width: 100%; height: 400px;">
+          </a>
+        
+        <div class="p-2 card-body  border-top">
+          <div>
+            <div>
+              {% if request.user in review.like_users.all %}
+                <i id="like-btn-{{ review.pk }}" data-review-id="{{ review.pk }}" class="bi-suit-heart-fill like-btn"></i>
+              {% else %}
+                <i id="like-btn-{{ review.pk }}" data-review-id="{{ review.pk }}" class="bi-suit-heart like-btn"></i>
+              {% endif %}
+              <i class="bi bi-chat mx-1"></i>
+            </div>
+        
+            <div>
+              <p id="like-count-{{ review.pk }}" class="mb-0">좋아요 {{ review.like_users.count }}개</p>
+            </div>
+          </div>
+          <div class="d-flex">
+            <a class="mb-0 me-2 pt-2 fw-bold text-decoration-none text-black" href="{% url 'accounts:detail' review.user.pk %}">{{ review.user.username }}
+            </a>
+            <p class="mb-0 pt-2">{{ review.content }}</p>
+          </div>
+          
+        </div>
+      </div>
+
     {% endfor %}
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const likeBtns = document.querySelectorAll('.like-btn')
+    likeBtns.forEach(function(likeBtn){
+      likeBtn.addEventListener('click', function (event){
+        console.log(event.target.dataset)
+        axios({
+          method: 'get',
+          url: `/reviews/${event.target.dataset.reviewId}/like/` 
+        })
+        .then(response => {
+          console.log(response)
+          console.log(response.data)
+          if (response.data.isLiked === true) {
+          event.target.classList.add('bi-suit-heart-fill')
+          event.target.classList.remove('bi-suit-heart')
+          } else {
+            event.target.classList.add('bi-suit-heart')
+            event.target.classList.remove('bi-suit-heart-fill')
+          }
+          const likeCount = document.querySelector(`#like-count-${event.target.dataset.reviewId}`)
+          likeCount.innerText = `좋아요 ${response.data.likeCount}개`
+        })
+      })
+  })
+  </script>
 {% endblock content %}
