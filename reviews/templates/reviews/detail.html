@@ -1,5 +1,4 @@
 {% extends 'base.html' %} 
-
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -9,10 +8,29 @@
 <p>{{ review.content }}</p>
 <a href="{% url 'reviews:update' review.pk %}">글수정</a>
 <a href="{% url 'reviews:delete' review.pk %}">글삭제</a>
+<span>
+  {% if request.user.is_authenticated %}
+  <a  href="{% url 'reviews:like' review.pk %}">
+    {% if request.user in review.like_users.all %}
+    
+    좋아요 취소
+    <i class="bi bi-chat-square-heart-fill"></i></i>
+    
+    {% else %}
+    좋아요
+    <i class="bi bi-chat-square-heart"></i></i>
+    {% endif %}</a
+  >{{ review.like_users.count }}</span
+>
+{% endif %} 
+</span>
 <hr>
 {% if review.image %}
 <img src="{{ review.image.url }}" alt="{{ review.image }}" width="400" height="300">
 {% endif %}
+
+
+
 
 <hr>
 <!-- Comment-Form -->
