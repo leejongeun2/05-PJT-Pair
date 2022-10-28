@@ -83,7 +83,10 @@ def like(request, pk):
     review = Review.objects.get(pk=pk)
     if request.user in review.like_users.all():
         review.like_users.remove(request.user)
+        is_liked = False
     else:
         review.like_users.add(request.user)
-    return redirect('reviews:detail', pk)
+        is_liked = True
+    context = {'isLiked': is_liked, 'likeCount': review.like_users.count()}
+    return JsonResponse(context)
 
