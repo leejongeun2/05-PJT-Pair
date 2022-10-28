@@ -72,12 +72,13 @@ def detail(request, pk):
     }
     return render(request, 'accounts/detail.html', context)
 
-def update(request):
+def update(request, pk):
+    user = get_user_model().objects.get(pk=pk)
     if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('accounts:detail', request.user.pk)
+            return redirect('accounts:profile')
     else:
         form = CustomUserChangeForm(instance=request.user)
     context = {
@@ -85,12 +86,12 @@ def update(request):
     }
     return render(request, 'accounts/update.html', context)
 
-def change_password(request):
+def change_password(request, pk):
     if request.method == "POST":
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            return redirect("accounts:index")
+            return redirect("accounts:main")
     else:
         form = PasswordChangeForm(request.user)
     context = {

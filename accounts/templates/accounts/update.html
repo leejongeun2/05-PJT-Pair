@@ -10,5 +10,6 @@
     {% bootstrap_button content="수정" button_type="submit" button_class="btn-danger" %}
   </form>
   <a href="{% url 'accounts:delete' %}" class="btn btn-secondary">회원탈퇴</a>
+  <a href="{% url 'accounts:profile' %}" class="btn btn-secondary">돌아가기</a>
 
   {% endblock content %}

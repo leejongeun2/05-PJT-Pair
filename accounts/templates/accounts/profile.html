@@ -7,9 +7,7 @@
 
     {% if profile.image %}
     <div class="row">
-        <img src="{{ profile.image.url }}" alt="" style="width: 100px; height: 100px; border-radius: 500px" />
-
-
+        <img src="{{ profile.image.url }}" alt="" style="width: 100px; height: 100px; border-radius: 50%" />
         <div class="col-10 d-flex justify-content-around ">
             <div>
                 <p class="fw-bold text-center ">{{ user.review_set.count }}</p>
@@ -26,12 +24,21 @@
             </div>
         </div>
         {% for review in user.review_set.all %}
-            <a href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a>
+        <a href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a>
         {% endfor %}
     </div>
     {% else %}
     <img src="https://dummyimage.com/1200x960/000000/c4c4c4" class="" style="width: 100px; height: 100px" />
     {% endif %}
+
+    <div class="col-6">
+        {% for article in user.article_set.all %}
+        <p>
+            {{ forloop.counter }}
+            <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+        </p>
+        {% endfor %}
+    </div>
     <div class="mb-2">
         <br>
         ID :{{ user.username }}
@@ -39,6 +46,7 @@
         MAIL :{{ user.email }}
     </div>
     <a href="{% url 'accounts:profile_update' %}" class="btn btn-outline-success w-100 ">프로필 수정</a>
+    <a href="{% url 'accounts:update' user.pk %}" class="btn btn-outline-success w-100 ">개인정보 수정</a>
     </p>
 </div>
 
@@ -48,11 +56,12 @@
 </div>
 <hr>
 
+<!-- Reviews -->
 <div>
     {% for review in reviews %}
-        {% if review.image %}
-        <img class="m-2" src="{{ review.image.url }}" alt="{{ review.image }}" width="400" height="300" />
-        {% endif %}
+    {% if review.image %}
+    <img class="m-2" src="{{ review.image.url }}" alt="{{ review.image }}" width="400" height="300" />
+    {% endif %}
     {% endfor %}
 </div>
 
