@@ -8,7 +8,10 @@ from django.contrib.auth.decorators import login_required
 
 def index(request):
     reviews = Review.objects.order_by("-pk")
-    context = {"reviews": reviews}
+    context = {
+        "reviews": reviews,
+        'profile': request.user.profile_set.all()[0]
+    }
     return render(request, "reviews/index.html", context)
 
 @login_required
@@ -22,7 +25,10 @@ def create(request):
             return redirect("reviews:index")
     else:
         review_form = ReviewForm()
-        context = {"review_form": review_form}
+        context = {
+            "review_form": review_form,
+            'profile': request.user.profile_set.all()[0],
+            }
     return render(request, "reviews/create.html", context)
 
 
