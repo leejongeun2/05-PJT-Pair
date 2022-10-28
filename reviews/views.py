@@ -97,3 +97,7 @@ def like(request, pk):
     context = {'isLiked': is_liked, 'likeCount': review.like_users.count()}
     return JsonResponse(context)
 
+@property
+def image_url(self):
+    if self.image and hasattr(self.image, 'url'):
+        return self.image.url
