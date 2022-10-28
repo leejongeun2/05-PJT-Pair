@@ -1,0 +1,19 @@
+@import 'reviews/detail.css';
+
+
+a { 
+  text-decoration:none;
+  color: #000;
+}
+
+a:hover { 
+  text-decoration:none;
+  color: #000;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+}

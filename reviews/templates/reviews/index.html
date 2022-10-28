@@ -8,7 +8,7 @@
   <hr>
   {% for review in reviews %} 
     <div class="mb-4 card">
-      <a class="text-decoration-none text-black" href="{% url 'accounts:detail' article.user.pk %}">
+      <a class="text-decoration-none text-black" href="{% url 'accounts:detail' review.pk %}">
       
         {% if review.image %}
           <img src="{{ review.image.url }}" alt="{{ review.image }}" width="400" height="300">
