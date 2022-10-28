@@ -70,23 +70,13 @@ def comment_create(request, pk):
         comment.user = request.user
         comment.review = review
         comment.save()
-        return JsonResponse(
-            {
-                "content": comment.content,
-            }
-        )
-
+    return redirect('reviews:detail', pk)
 
 @login_required
 def comment_delete(request, review_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     comment.delete()
-    comment = False
-    return JsonResponse(
-        {
-            "content": comment,
-        }
-    )
+    return redirect('reviews:detail', review_pk)
 
 @login_required
 def like(request, pk):
