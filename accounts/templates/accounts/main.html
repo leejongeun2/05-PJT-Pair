@@ -3,14 +3,21 @@
 {% bootstrap_javascript %}
 
 {% block content %}
+<div class="d-flex justify-content-center align-items-center h-100">
+  <div class="col-8 m-auto p-5 d-flex flex-column align-items-center border border-3 justify-content-center" style="height: 600px;">
+    <img src="https://fontmeme.com/images/instagram-new-logo.png" width="120" height="45" alt="">
+    <form class="w-100" action="" method="POST">
+  
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <input class="btn btn-primary mb-3 w-100" type="submit" value="로그인">
+  
+      <div class="text-center">
+        <a class="text-secondary" href="{% url 'accounts:signup' %}">회원가입</a>
+      </div>
+    </form>
+  </div>
+</div>
 
-<h1>로그인</h1>
-<form action="" method="POST">
 
-  {% csrf_token %}
-  {% bootstrap_form form %}
-
-  {% bootstrap_button content="로그인" button_type="submit" button_class="btn-danger" %}
-</form>
-<a href="{% url 'accounts:signup' %}">회원가입</a>
 {% endblock content %}
