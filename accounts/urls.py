@@ -4,16 +4,16 @@ app_name= 'accounts'
 
 
 urlpatterns = [
-    path('', views.index, name = 'index'),
-    path('signup/', views.signup, name='signup'),
-    path('login/', views.login, name='login'),
-    path('logout/', views.logout, name='logout'),
-    path('<int:pk>/', views.detail, name='detail'),
-    path('update/', views.update, name='update'),
-    path('password/', views.change_password, name='change_password'),
-    path('<int:pk>/follow/', views.follow, name='follow'),
-    path('delete/', views.delete, name='delete'),
-    path("profile/", views.profile, name="profile"),
-    path("profile/update/", views.profile_update, name="profile_update"),
+    path('', views.main, name = 'main'),
+    path('accounts/signup/', views.signup, name='signup'),
+    path('accounts/login/', views.login, name='login'),
+    path('accounts/logout/', views.logout, name='logout'),
+    path('accounts/<int:pk>/', views.detail, name='detail'),
+    path('accounts/update/', views.update, name='update'),
+    path('accounts/password/', views.change_password, name='change_password'),
+    path('accounts/<int:pk>/follow/', views.follow, name='follow'),
+    path('accounts/delete/', views.delete, name='delete'),
+    path("accounts/profile/", views.profile, name="profile"),
+    path("accounts/profile/update/", views.profile_update, name="profile_update"),
     
 ]

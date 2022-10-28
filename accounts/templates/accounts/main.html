@@ -1,0 +1,16 @@
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+
+<h1>로그인</h1>
+<form action="" method="POST">
+
+  {% csrf_token %}
+  {% bootstrap_form form %}
+
+  {% bootstrap_button content="로그인" button_type="submit" button_class="btn-danger" %}
+</form>
+<a href="{% url 'accounts:signup' %}">회원가입</a>
+{% endblock content %}

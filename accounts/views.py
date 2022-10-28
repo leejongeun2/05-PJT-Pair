@@ -10,12 +10,20 @@ from .models import Profile
 
 # Create your views here.
 
-def index(request):
+def main(request):
     users = get_user_model().objects.all()
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            auth_login(request, form.get_user())
+            return redirect(request.GET.get('next') or 'reviews:index') 
+    else:
+        form = AuthenticationForm()
     context = {
-        "users":users
+        "users":users,
+        'form': form,
     }
-    return render(request, "accounts/index.html", context)
+    return render(request, "accounts/main.html", context)
 
 def signup(request):
     if request.method == 'POST':
