@@ -15,7 +15,7 @@ class CommentForm(ModelForm):
         label='',
         widget=widgets.TextInput(
             attrs={
-                'class': 'w-100',
+                'style': 'width: 350px',
                 'placeholder': '댓글 작성',
             })
         )

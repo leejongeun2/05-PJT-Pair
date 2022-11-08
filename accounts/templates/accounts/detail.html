@@ -1,67 +1,86 @@
 {% extends 'base.html' %}
+
 {% block content %}
 
-  <div class="row">
+<div class="profile accounts-detail">
     <!-- Detail -->
     <div class="profile">
-      <div class="row">
-        <div class="col-10 d-flex justify-content-around ">
-          {% if profile.image %}
-          <img src="{{ profile.image.url }}" alt="" style="width: 100px; height: 100px; border-radius: 500px" />
-          {% else %}
-          <img src="https://dummyimage.com/1200x960/000000/c4c4c4" class="" style="width: 100px; height: 100px" />
-          {% endif %}
-          <div>
-            <p class="fw-bold text-center ">{{ user.review_set.count }}</p>
-            <h5>게시물</h5></a>
-          </div>
-          
-          <div>
-            <p class="fw-bold text-center">{{ user.followings.count }}</p>
-            <h5>팔로우</h5>
-          </div>
-          <div>
-            <p class="fw-bold text-center">{{ user.followers.count }}</p>
-            <h5>팔로워</h5>
-          </div>
+        <div class="d-flex">
+            <!-- Detail-iamge -->
+            <div class="w-25 me-5">
+                {% for profile in user.profile_set.all %}
+                {% if profile.image %}
+                <img src="{{ profile.image.url }}" alt=""
+                    style="width: 200px; height: 200px; border-radius: 50%;" />
+                {% else %}
+                <img src="https://dummyimage.com/1200x960/000000/c4c4c4" class=""
+                    style="width: 200px; height: 200px; border-radius: 50%;" />
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="d-flex w-75 flex-column justify-content-center align-items-around" style="margin-left: 70px;">
+                <div class="d-flex align-items-center">
+                    <div class="d-flex">
+                        <p class="fs-3 m-0 me-5">{{ user.username }} 🌠</p>
+                    </div>
+                    <div class="d-flex align-items-center" style="width: 300px;">
+                        <!-- Follow -->
+                        {% if request.user.is_authenticated %}
+                            {% if request.user != user %}
+                            <a href="{% url 'accounts:follow' user.pk %}">
+                                <!-- Follow-btn -->
+                                {% if request.user in user.followers.all %}
+                                <button type="button" style="border: 0; background: none;"><i class="fa-solid fa-user-check fa-lg"></i></button>
+                                {% else %}
+                                <button type="button" class="btn btn-primary">팔로우</button>
+                                {% endif %}
+                            </a>
+                            {% endif %}
+                        {% else %}
+                        팔로우 하려면 로그인이 필요합니다
+                        {% endif %}
+                        <i class="mx-3 fa-solid fa-chevron-down fa-lg"></i>
+                        <i class="mx-3 fa-solid fa-ellipsis fa-lg"></i>
+                    </div>
+                </div>
+                
+                <div class="d-flex mt-4">
+                    <div class="me-5 d-flex">
+                        <h5 class="me-2">게시물</h5>
+                        <p class="fw-bold text-center ">{{ user.review_set.count }}</p>
+                    </div>
+                    <div class="mx-5 d-flex">
+                        <h5 class="me-2">팔로우</h5>
+                        <p class="fw-bold text-center">{{ user.followings.count }}</p>
+                    </div>
+                    <div class="ms-5 d-flex">
+                        <h5 class="me-2">팔로워</h5>
+                        <p class="fw-bold text-center">{{ user.followers.count }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="mb-2">
-          <br>
-          ID :{{ user.username }}
-          <br>
-          MAIL :{{ user.email }}
-      </div>
-      </p>
-      <!-- Follow -->
-      {% if request.user.is_authenticated %}
-        {% if request.user != user %}
-          <a href="{% url 'accounts:follow' user.pk %}">
-            <!-- Follow-btn -->
-            {% if request.user in user.followers.all %}
-            <button type="button" class="btn btn-outline-primary">팔로우 취소</button>
-            {% else %}
-            <button type="button" class="btn btn-outline-primary">팔로우</button>
-            {% endif %}
-          </a>
-        {% endif %}
-      {% else %}
-        팔로우 하려면 로그인이 필요합니다
-      {% endif %}
-  </div>
-  
-  <hr>
-  <div class="d-flex justify-content-center">
-      <i class="bi bi-card-image fs-5 ">게시물</i>
-  </div>
-  <hr>
-  
-  <div>
-      {% for review in reviews %}
-          {% if review.image %}
-          <img class="m-2" src="{{ review.image.url }}" alt="{{ review.image }}" width="400" height="300" />
-          {% endif %}
-      {% endfor %}
-  </div>
-  
-  {% endblock content %}
+
+
+        <!-- Hr -->
+        <hr>
+        <div class="d-flex justify-content-center">
+            <i class="bi bi-card-image fs-5 "> 게시물</i>
+        </div>
+
+        <!-- Reviews -->
+        <hr>
+        <div class="d-flex">
+            <div class="row row-cols-4 detail-box">
+                {% for review in reviews %}
+                {% if review.image %}
+                <img class="m-3" src="{{ review.image.url }}" alt="{{ review.image }}" width="400" height="300" />
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,5 +1,11 @@
 @import 'reviews/detail.css';
+@import 'reviews/create.css';
+@import 'accounts/detail.css';
 
+
+form {
+  margin: 0;
+}
 
 a { 
   text-decoration:none;
@@ -17,10 +23,10 @@ a:hover {
   top: 0;
   width: 100%;
   background-color: #fff;
+  z-index: 9;
 }
 
 
-.review-index,
-.profile {
+.review-index {
   margin-top: 100px;
 }
