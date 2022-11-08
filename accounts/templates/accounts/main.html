@@ -8,6 +8,9 @@
     <img src="https://fontmeme.com/images/instagram-new-logo.png" width="120" height="45" alt="">
     <form class="w-100" action="" method="POST">
 
+
+
+
       {% csrf_token %}
       {% bootstrap_form form %}
       <input class="btn btn-primary mb-3 w-100" type="submit" value="로그인">
@@ -18,4 +21,5 @@
     </form>
   </div>
 </div>
+
 {% endblock content %}
